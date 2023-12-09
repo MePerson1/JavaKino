@@ -1,6 +1,6 @@
 package com.processes.cinematicketapi.service;
 
-import com.processes.cinematicketapi.exeptions.NotFoundException;
+import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.models.Ticket;
 import com.processes.cinematicketapi.repository.TicketRepository;

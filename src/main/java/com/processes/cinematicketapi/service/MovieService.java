@@ -1,6 +1,6 @@
 package com.processes.cinematicketapi.service;
 
-import com.processes.cinematicketapi.exeptions.NotFoundException;
+import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,8 @@ public class MovieService
     private final MovieRepository movieRepository;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository) {
+    public MovieService(MovieRepository movieRepository)
+    {
         this.movieRepository = movieRepository;
     }
 

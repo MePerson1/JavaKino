@@ -1,4 +1,4 @@
-package com.processes.cinematicketapi.exeptions;
+package com.processes.cinematicketapi.exceptions;
 
 public class NotFoundException extends RuntimeException
 {
