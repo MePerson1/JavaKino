@@ -25,7 +25,7 @@ public class Movie
     private String genre;
     private String director;
     private String originalLanguage;
-    private int raiting;
+    private int rating;
     private int ageRestriction;
     private int runtime;
 }
