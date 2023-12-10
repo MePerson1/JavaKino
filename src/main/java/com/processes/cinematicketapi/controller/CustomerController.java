@@ -22,7 +22,7 @@ public class CustomerController
     }
 
     @GetMapping
-    ResponseEntity<List<Customer>> GetAllCustomers()
+    ResponseEntity<List<Customer>> getAllCustomers()
     {
         List<Customer> customers = _customerService.getAllCustomers();
         if (customers.isEmpty())
@@ -33,7 +33,7 @@ public class CustomerController
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Customer> GetCustomerById(@PathVariable Long id)
+    ResponseEntity<Customer> getCustomerById(@PathVariable Long id)
     {
         Customer customer = _customerService.getCustomerById(id);
         if (customer == null)
@@ -44,7 +44,7 @@ public class CustomerController
     }
 
     @GetMapping("/by-name/{name}")
-    ResponseEntity<Customer> GetCustomerByName(@PathVariable String name)
+    ResponseEntity<Customer> getCustomerByName(@PathVariable String name)
     {
         Customer customer = _customerService.getCustomerByName(name);
         if (customer == null)
@@ -55,7 +55,7 @@ public class CustomerController
     }
 
     @PostMapping
-    ResponseEntity<?> CreateCustomer(@RequestBody Customer newCustomer)
+    ResponseEntity<?> createCustomer(@RequestBody Customer newCustomer)
     {
         try
         {
@@ -70,7 +70,7 @@ public class CustomerController
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Customer> UpdateCustomer(@RequestBody Customer customer, @PathVariable Long id)
+    ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable Long id)
     {
         Customer existingCustomer = _customerService.getCustomerById(id);
         if (existingCustomer == null)
@@ -93,7 +93,7 @@ public class CustomerController
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<String> DeleteCustomer(@PathVariable Long id)
+    ResponseEntity<String> deleteCustomer(@PathVariable Long id)
     {
         try
         {

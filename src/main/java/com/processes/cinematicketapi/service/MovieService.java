@@ -7,10 +7,12 @@ import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class MovieService implements IMovieService
 {
     private final MovieRepository movieRepository;
@@ -21,11 +23,13 @@ public class MovieService implements IMovieService
     }
 
     // Metody:
+    @Override
     public Movie getMovieById(Long id) throws NotFoundException
     {
         return movieRepository.findById(id).orElseThrow(() -> new NotFoundException("Movie not found with id: " + id));
     }
 
+    @Override
     public List<Movie> getMovieByTitle(String title)
     {
         List<Movie> movies = movieRepository.findByTitle(title);
@@ -35,6 +39,7 @@ public class MovieService implements IMovieService
         return movies;
     }
 
+    @Override
     public List<Movie> getAllMovies()
     {
         List<Movie> movies = movieRepository.findAll();
@@ -44,11 +49,13 @@ public class MovieService implements IMovieService
         return movies;
     }
 
+    @Override
     public Movie save(Movie movie)
     {
         return movieRepository.save(movie);
     }
 
+    @Override
     public boolean deleteById(Long id)
     {
         if(movieRepository.deleteAndReturnStatusById(id)!=0) return true;

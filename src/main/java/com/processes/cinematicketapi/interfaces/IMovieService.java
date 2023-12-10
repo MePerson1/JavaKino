@@ -1,15 +1,18 @@
 package com.processes.cinematicketapi.interfaces;
 
-import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.models.Movie;
 
 import java.util.List;
 
 public interface IMovieService
 {
-    public List<Movie> getAllMovies();
-    public Movie getMovieById(Long id);
-    public List<Movie> getMovieByTitle(String title);
-    public Movie save(Movie movie);
-    public boolean deleteById(Long id);
+    List<Movie> getAllMovies();
+
+    Movie getMovieById(Long id);
+
+    List<Movie> getMovieByTitle(String title);
+
+    Movie save(Movie movie);
+
+    boolean deleteById(Long id);
 }

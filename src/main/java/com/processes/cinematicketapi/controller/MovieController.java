@@ -22,28 +22,28 @@ public class MovieController
     }
 
     @GetMapping
-    ResponseEntity<List<Movie>> GetAllMovies()
+    ResponseEntity<List<Movie>> getAllMovies()
     {
         List<Movie> movies = _movieService.getAllMovies();
         return new ResponseEntity<>(movies, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Movie> GetMovieById(@PathVariable Long id)
+    ResponseEntity<Movie> getMovieById(@PathVariable Long id)
     {
         Movie movie = _movieService.getMovieById(id);
         return new ResponseEntity<>(movie, HttpStatus.OK);
     }
 
     @GetMapping("/by-title/{title}")
-    ResponseEntity<List<Movie>> GetMovieByTitle(@PathVariable String title)
+    ResponseEntity<List<Movie>> getMovieByTitle(@PathVariable String title)
     {
         List<Movie> movies = _movieService.getMovieByTitle(title);
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<?> CreateMovie(@RequestBody Movie newMovie)
+    ResponseEntity<?> createMovie(@RequestBody Movie newMovie)
     {
         try
         {
@@ -57,7 +57,7 @@ public class MovieController
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Movie> UpdateMovie(@RequestBody Movie movie, @PathVariable Long id)
+    ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id)
     {
         Movie existingMovie = _movieService.getMovieById(id);
         if (existingMovie == null)

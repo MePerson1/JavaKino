@@ -16,10 +16,10 @@ import java.util.List;
 public interface TicketRepository extends JpaRepository<Ticket, Long>
 {
     List<Ticket> findByCustomer(Customer customer);
-    public List<Ticket> findAll();
+    List<Ticket> findAll();
 
     @Transactional
     @Modifying
     @Query("DELETE FROM Ticket t WHERE t.id = :id")
-    public int deleteAndReturnStatusById(@Param("id") Long id);
+    int deleteAndReturnStatusById(@Param("id") Long id);
 }

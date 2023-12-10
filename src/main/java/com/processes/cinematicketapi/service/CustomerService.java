@@ -7,11 +7,12 @@ import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CustomerService implements ICustomerService
 {
     private final CustomerRepository customerRepository;
@@ -22,11 +23,14 @@ public class CustomerService implements ICustomerService
         this.customerRepository = customerRepository;
     }
 
+    // Metody:
+    @Override
     public Customer getCustomerById(Long id)
     {
         return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found with id: " + id));
     }
 
+    @Override
     public Customer getCustomerByName(String name)
     {
         Customer customer = customerRepository.findByName(name);
@@ -36,6 +40,7 @@ public class CustomerService implements ICustomerService
         return customer;
     }
 
+    @Override
     public List<Customer> getAllCustomers()
     {
         List<Customer> customers = customerRepository.findAll();
@@ -45,6 +50,7 @@ public class CustomerService implements ICustomerService
         return customers;
     }
 
+    @Override
     public Customer save(Customer customer) {
         boolean alreadyExists = customerRepository.existsByEmail(customer.getEmail());
         if(alreadyExists)
@@ -53,12 +59,11 @@ public class CustomerService implements ICustomerService
         }
 
         return customerRepository.save(customer);
-
-
     }
+
+    @Override
     public boolean deleteById(Long id)
     {
-        if(customerRepository.deleteAndReturnStatusById(id)!=0) return true;
-        return false;
+        return customerRepository.deleteAndReturnStatusById(id) != 0;
     }
 }

@@ -14,12 +14,12 @@ import java.util.List;
 @Transactional
 public interface CustomerRepository extends JpaRepository<Customer, Long>
 {
-    public Customer findByName(String name);
+    Customer findByName(String name);
 
-    public boolean existsByEmail(String email);
-    public List<Customer> findAll();
+    boolean existsByEmail(String email);
+    List<Customer> findAll();
     @Transactional
     @Modifying
     @Query("DELETE FROM Customer c WHERE c.id = :id")
-    public int deleteAndReturnStatusById(@Param("id") Long id);
+    int deleteAndReturnStatusById(@Param("id") Long id);
 }

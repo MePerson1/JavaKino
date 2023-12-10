@@ -33,7 +33,7 @@ public class ScreeningController
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Screening> GetMovieById(@PathVariable Long id)
+    ResponseEntity<Screening> getScreeningById(@PathVariable Long id)
     {
         Screening screening = _screeningService.getScreeningById(id);
         return new ResponseEntity<>(screening,HttpStatus.OK);

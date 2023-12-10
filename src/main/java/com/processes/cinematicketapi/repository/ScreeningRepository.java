@@ -15,10 +15,10 @@ import java.util.List;
 public interface ScreeningRepository extends JpaRepository<Screening, Long>
 {
     List<Screening> findByMovieTitle(String movieTitle);
-    public List<Screening> findAll();
+    List<Screening> findAll();
 
     @Transactional
     @Modifying
     @Query("DELETE FROM Screening s WHERE s.id = :id")
-    public int deleteAndReturnStatusById(@Param("id") Long id);
+    int deleteAndReturnStatusById(@Param("id") Long id);
 }
