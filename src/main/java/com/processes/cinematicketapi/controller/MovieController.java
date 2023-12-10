@@ -1,6 +1,7 @@
 package com.processes.cinematicketapi.controller;
 
 import com.processes.cinematicketapi.exceptions.NotFoundException;
+import com.processes.cinematicketapi.interfaces.IMovieService;
 import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.service.CustomerService;
@@ -15,45 +16,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-    @Autowired
-    private final MovieService _movieService;
 
-    public MovieController(MovieService movieService) {
+    private final IMovieService _movieService;
+    @Autowired
+    public MovieController(IMovieService movieService) {
         _movieService = movieService;
     }
 
     @GetMapping
     ResponseEntity<List<Movie>> GetAllMovies(){
         List<Movie> movies = _movieService.getAllMovies();
-        if(movies.isEmpty())
-        {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
         return new ResponseEntity<>(movies,HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<Movie> GetMovieById(@PathVariable Long id){
         Movie movie = _movieService.getMovieById(id);
-        if(movie == null)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(movie,HttpStatus.OK);
     }
-    @GetMapping("/byTitle/{title}")
-    ResponseEntity<Movie> GetMovieById(@PathVariable String title){
-        Movie movie = _movieService.getMovieByTitle(title);
-        if(movie == null)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(movie,HttpStatus.OK);
+    @GetMapping("/by-title/{title}")
+    ResponseEntity<List<Movie>> GetMovieByTitle(@PathVariable String title){
+        List<Movie> movies = _movieService.getMovieByTitle(title);
+        return new ResponseEntity<>(movies,HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<?> CreateCustomer(@RequestBody Movie newMovie)
+    ResponseEntity<?> CreateMovie(@RequestBody Movie newMovie)
     {
         try{
             Movie movie = _movieService.save(newMovie);
@@ -65,7 +53,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Movie> UpdateCustomer(@RequestBody Movie movie, @PathVariable Long id)
+    ResponseEntity<Movie> UpdateMovie(@RequestBody Movie movie, @PathVariable Long id)
     {
         Movie existingMovie = _movieService.getMovieById(id);
         if(existingMovie == null){

@@ -1,6 +1,7 @@
 package com.processes.cinematicketapi.controller;
 
 import com.processes.cinematicketapi.exceptions.NotFoundException;
+import com.processes.cinematicketapi.interfaces.ICustomerService;
 import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.repository.CustomerRepository;
@@ -18,10 +19,10 @@ import java.util.Optional;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    @Autowired
-    private final CustomerService _customerService;
 
-    public CustomerController(CustomerService customerService)
+    private final ICustomerService _customerService;
+    @Autowired
+    public CustomerController(ICustomerService customerService)
     {
         _customerService  = customerService;
     }
@@ -45,7 +46,7 @@ public class CustomerController {
         }
         return new ResponseEntity<>(customer,HttpStatus.OK);
     }
-    @GetMapping("/byName/{name}")
+    @GetMapping("/by-name/{name}")
     ResponseEntity<Customer> GetCustomerByName(@PathVariable String name)
     {
         Customer customer = _customerService.getCustomerByName(name);
