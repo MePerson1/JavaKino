@@ -26,14 +26,22 @@ public class MovieService implements IMovieService
         return movieRepository.findById(id).orElseThrow(() -> new NotFoundException("Movie not found with id: " + id));
     }
 
-    public Movie getMovieByTitle(String title)
+    public List<Movie> getMovieByTitle(String title)
     {
-        return movieRepository.findByTitle(title);
+        List<Movie> movies = movieRepository.findByTitle(title);
+        if (movies.isEmpty()) {
+            throw new NotFoundException("Movie not found with title: " + title);
+        }
+        return movies;
     }
 
     public List<Movie> getAllMovies()
     {
-        return movieRepository.findAll();
+        List<Movie> movies = movieRepository.findAll();
+        if (movies.isEmpty()) {
+            throw new NotFoundException("Cannot find any movies");
+        }
+        return movies;
     }
 
     public Movie save(Movie movie)

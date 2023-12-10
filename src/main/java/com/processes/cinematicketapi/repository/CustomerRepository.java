@@ -15,6 +15,8 @@ import java.util.List;
 public interface CustomerRepository extends JpaRepository<Customer, Long>
 {
     public Customer findByName(String name);
+
+    public boolean existsByEmail(String email);
     public List<Customer> findAll();
     @Transactional
     @Modifying
