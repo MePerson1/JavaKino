@@ -16,9 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-    @Autowired
-    private final IMovieService _movieService;
 
+    private final IMovieService _movieService;
+    @Autowired
     public MovieController(IMovieService movieService) {
         _movieService = movieService;
     }

@@ -19,9 +19,9 @@ import java.util.Optional;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    @Autowired
-    private final ICustomerService _customerService;
 
+    private final ICustomerService _customerService;
+    @Autowired
     public CustomerController(ICustomerService customerService)
     {
         _customerService  = customerService;
