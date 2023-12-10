@@ -2,6 +2,7 @@ package com.processes.cinematicketapi.service;
 
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.IScreeningService;
+import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.models.Screening;
 import com.processes.cinematicketapi.repository.ScreeningRepository;
@@ -25,6 +26,11 @@ public class ScreeningService implements IScreeningService
     public Screening getScreeningById(Long id)
     {
         return screeningRepository.findById(id).orElseThrow(() -> new NotFoundException("Screening not found with id: " + id));
+    }
+
+    public List<Screening> getAllScreenings()
+    {
+        return screeningRepository.findAll();
     }
 
     public List<Screening> getScreeningsByMovieTitle(String movieTitle)

@@ -11,4 +11,5 @@ public interface IScreeningService
     public List<Screening> getScreeningsByMovieTitle(String movieTitle);
     public Screening save(Screening screening);
     public boolean deleteById(Long id);
+    List<Screening> getAllScreenings();
 }
