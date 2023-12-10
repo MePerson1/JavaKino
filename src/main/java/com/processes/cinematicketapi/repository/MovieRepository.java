@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public interface MovieRepository extends JpaRepository<Movie, Long>
 {
-    public Movie findByTitle(String title);
+    public List<Movie> findByTitle(String title);
     public List<Movie> findAll();
 
     @Transactional
