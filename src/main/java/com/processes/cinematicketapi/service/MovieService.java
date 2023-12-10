@@ -21,7 +21,7 @@ public class MovieService implements IMovieService
     }
 
     // Metody:
-    public Movie getMovieById(Long id)
+    public Movie getMovieById(Long id) throws NotFoundException
     {
         return movieRepository.findById(id).orElseThrow(() -> new NotFoundException("Movie not found with id: " + id));
     }
