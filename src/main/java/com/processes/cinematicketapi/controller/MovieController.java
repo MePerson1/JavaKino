@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/movies")
 public class MovieController {
     @Autowired
     private final MovieService _movieService;
@@ -19,7 +20,7 @@ public class MovieController {
         _movieService = movieService;
     }
 
-    @GetMapping("/movies")
+    @GetMapping
     List<Movie> GetAllMovies(){
         List<Movie> movies = _movieService.getAllMovies();
         if(movies.isEmpty())
@@ -30,7 +31,7 @@ public class MovieController {
         return movies;
     }
 
-    @GetMapping("/movies/{id}")
+    @GetMapping("/{id}")
     Movie GetMovieById(@PathVariable Long id){
         Movie movie = _movieService.getMovieById(id);
         if(movie == null)
@@ -39,7 +40,7 @@ public class MovieController {
         }
         return movie;
     }
-    @GetMapping("/movies/{title}")
+    @GetMapping("/byTitle/{title}")
     Movie GetMovieById(@PathVariable String title){
         Movie movie = _movieService.getMovieByTitle(title);
         if(movie == null)
@@ -49,13 +50,13 @@ public class MovieController {
         return movie;
     }
 
-    @PostMapping("/movies")
+    @PostMapping
     Movie CreateCustomer(@RequestBody Movie movie)
     {
         return _movieService.save(movie);
     }
 
-    @PutMapping("/movies/{id}")
+    @PutMapping("/{id}")
     Movie UpdateCustomer(@RequestBody Movie updatedMovie, @PathVariable Long id)
     {
         Movie existingMovie = _movieService.getMovieById(id);
@@ -73,5 +74,16 @@ public class MovieController {
         existingMovie.setRuntime(updatedMovie.getRuntime());
 
         return _movieService.save(existingMovie);
+    }
+
+    @DeleteMapping("/{id}")
+    public String DeleteMovie(@PathVariable Long id) {
+        boolean isDeleted = _movieService.deleteById(id);
+
+        if (isDeleted) {
+            return "Customer deleted successfully";
+        } else {
+            return "Customer with ID " + id + " does not exist or couldn't be deleted";
+        }
     }
 }

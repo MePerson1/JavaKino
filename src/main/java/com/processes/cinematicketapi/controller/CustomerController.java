@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/customers")
 public class CustomerController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class CustomerController {
         _customerService  = customerService;
     }
 
-    @GetMapping("/customers")
+    @GetMapping
     List<Customer> GetAllCustomers(){
         List<Customer> customers = _customerService.getAllCustomers();
         if(customers.isEmpty())
@@ -33,7 +34,7 @@ public class CustomerController {
         return customers;
     }
 
-    @GetMapping("/customers/{id}")
+    @GetMapping("/{id}")
     Customer GetCustomerById(@PathVariable Long id){
         Customer customer = _customerService.getCustomerById(id);
         if(customer == null)
@@ -42,7 +43,7 @@ public class CustomerController {
         }
         return customer;
     }
-    @GetMapping("/customers/{name}")
+    @GetMapping("/byName/{name}")
     Customer GetCustomerByName(@PathVariable String name)
     {
         Customer customer = _customerService.getCustomerByName(name);
@@ -52,13 +53,13 @@ public class CustomerController {
         }
         return customer;
     }
-    @PostMapping("/customers")
+    @PostMapping
     Customer CreateCustomer(@RequestBody Customer customer)
     {
         return _customerService.save(customer);
     }
 
-    @PutMapping("/customers/{id}")
+    @PutMapping("/{id}")
     Customer UpdateCustomer(@RequestBody Customer customer, @PathVariable Long id)
     {
         Customer existingCustomer = _customerService.getCustomerById(id);
@@ -73,8 +74,14 @@ public class CustomerController {
         return _customerService.save(existingCustomer);
     }
 
-    
+    @DeleteMapping("/customers/{id}")
+    public String DeleteCustomer(@PathVariable Long id) {
+        boolean isDeleted = _customerService.deleteById(id);
 
-
-
+        if (isDeleted) {
+            return "Customer deleted successfully";
+        } else {
+            return "Customer with ID " + id + " does not exist or couldn't be deleted";
+        }
+    }
 }
