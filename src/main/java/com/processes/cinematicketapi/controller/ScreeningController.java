@@ -1,10 +1,7 @@
 package com.processes.cinematicketapi.controller;
 
 import com.processes.cinematicketapi.interfaces.IScreeningService;
-import com.processes.cinematicketapi.models.Customer;
-import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.models.Screening;
-import com.processes.cinematicketapi.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("api/screening")
 public class ScreeningController
 {
     private final IScreeningService _screeningService;
@@ -70,19 +67,22 @@ public class ScreeningController
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id)
     {
-        try {
+        try
+        {
             boolean isDeleted = _screeningService.deleteById(id);
 
             if (isDeleted)
             {
                 return new ResponseEntity<>("Screening deleted successfully", HttpStatus.OK);
-            } else
+            }
+            else
             {
                 return new ResponseEntity<>("Screening with ID " + id + " does not exist or couldn't be deleted", HttpStatus.NOT_FOUND);
             }
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
-            return new ResponseEntity<>("Error deleting movie", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error deleting screening", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -13,4 +13,5 @@ public interface ITicketService
     public List<Ticket> getTicketsByCustomer(Customer customer);
     public Ticket save(Ticket ticket);
     public boolean deleteById(Long id);
+    List<Ticket> getAllTickets();
 }
