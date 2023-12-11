@@ -34,8 +34,9 @@ public class CustomerService implements ICustomerService
     public Customer getCustomerByName(String name)
     {
         Customer customer = customerRepository.findByName(name);
-        if (customer == null) {
-            throw new NotFoundException("Customer not found with name: " + name);
+        if (customer == null)
+        {
+            throw new NotFoundException("Customer with name: " + name + "not found!");
         }
         return customer;
     }
@@ -44,18 +45,20 @@ public class CustomerService implements ICustomerService
     public List<Customer> getAllCustomers()
     {
         List<Customer> customers = customerRepository.findAll();
-        if (customers.isEmpty()) {
-            throw new NotFoundException("Cannot find any customers");
+        if (customers.isEmpty())
+        {
+            throw new NotFoundException("Cannot find any customers!");
         }
         return customers;
     }
 
     @Override
-    public Customer save(Customer customer) {
+    public Customer save(Customer customer)
+    {
         boolean alreadyExists = customerRepository.existsByEmail(customer.getEmail());
-        if(alreadyExists)
+        if (alreadyExists)
         {
-            throw new AlreadyExistsException("User with email "+customer.getEmail()+" already exists!");
+            throw new AlreadyExistsException("User with email " + customer.getEmail() + " already exists!");
         }
 
         return customerRepository.save(customer);

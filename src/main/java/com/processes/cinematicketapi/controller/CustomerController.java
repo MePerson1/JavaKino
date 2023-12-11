@@ -25,10 +25,6 @@ public class CustomerController
     ResponseEntity<List<Customer>> getAllCustomers()
     {
         List<Customer> customers = _customerService.getAllCustomers();
-        if (customers.isEmpty())
-        {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 

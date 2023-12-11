@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ScreeningCreateDto
+public class ScreeningDto
 {
     private Long movieId;
     private Date date;

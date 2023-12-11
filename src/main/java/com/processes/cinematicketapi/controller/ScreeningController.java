@@ -1,9 +1,10 @@
 package com.processes.cinematicketapi.controller;
 
-import com.processes.cinematicketapi.dto.ScreeningCreateDto;
+import com.processes.cinematicketapi.dto.ScreeningDto;
+import com.processes.cinematicketapi.exceptions.AlreadyExistsException;
+import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.IMovieService;
 import com.processes.cinematicketapi.interfaces.IScreeningService;
-import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.models.Screening;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,33 +32,29 @@ public class ScreeningController
     ResponseEntity<List<Screening>> getAll()
     {
         List<Screening> screenings = _screeningService.getAllScreenings();
-        if(screenings.isEmpty())
-        {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(screenings,HttpStatus.OK);
+        return new ResponseEntity<>(screenings, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<Screening> getById(@PathVariable Long id)
     {
         Screening screening = _screeningService.getScreeningById(id);
-        return new ResponseEntity<>(screening,HttpStatus.OK);
+        return new ResponseEntity<>(screening, HttpStatus.OK);
     }
 
     @GetMapping("title/{title}")
     ResponseEntity<List<Screening>> getByTitle(@PathVariable String title)
     {
         List<Screening> screenings = _screeningService.getScreeningsByMovieTitle(title);
-        if(screenings.isEmpty())
+        if (screenings.isEmpty())
         {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(screenings,HttpStatus.OK);
+        return new ResponseEntity<>(screenings, HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody ScreeningCreateDto newScreeningDto)
+    ResponseEntity<?> create(@RequestBody ScreeningDto newScreeningDto)
     {
         try
         {
@@ -72,36 +69,36 @@ public class ScreeningController
 
             Screening savedScreening = _screeningService.save(screening);
 
-            return new ResponseEntity<>(savedScreening,HttpStatus.CREATED);
+            return new ResponseEntity<>(savedScreening, HttpStatus.CREATED);
         }
-        catch (Exception e)
+        catch (AlreadyExistsException | NotFoundException e)
         {
-            return new ResponseEntity<>("Failed to create customer: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Failed to create screening: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Screening> update(@RequestBody Screening screening, @PathVariable Long id)
+    ResponseEntity<?> update(@RequestBody ScreeningDto screening, @PathVariable Long id)
     {
-        Screening existingScreening = _screeningService.getScreeningById(id);
-        if (existingScreening == null)
+        try
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Screening existingScreening = _screeningService.getScreeningById(id);
+            Movie existingMovie = _movieService.getMovieById(screening.getMovieId());
+
+            existingScreening.setMovie(existingMovie);
+            existingScreening.setRoomNumber(screening.getRoomNumber());
+            existingScreening.setDate(screening.getDate());
+            existingScreening.setTicketPrice(screening.getTicketPrice());
+            existingScreening.setTicketCount(screening.getTicketCount());
+
+            Screening updatedScreening = _screeningService.save(existingScreening);
+
+            return new ResponseEntity<>(updatedScreening, HttpStatus.OK);
         }
-
-        existingScreening.setRoomNumber(screening.getRoomNumber());
-        existingScreening.setDate(screening.getDate());
-        existingScreening.setTicketPrice(screening.getTicketPrice());
-        existingScreening.setTicketCount(screening.getTicketCount());
-
-        Screening updatedScreening = _screeningService.save(existingScreening);
-
-        if (updatedScreening == null)
+        catch (AlreadyExistsException | NotFoundException e)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Failed to update screening: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(updatedScreening, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
