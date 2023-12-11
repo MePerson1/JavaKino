@@ -41,7 +41,7 @@ public class TicketController
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Ticket> GetMovieById(@PathVariable Long id)
+    ResponseEntity<Ticket> getById(@PathVariable Long id)
     {
         Ticket ticket = _ticketService.getTicketById(id);
         return new ResponseEntity<>(ticket,HttpStatus.OK);
@@ -59,15 +59,15 @@ public class TicketController
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody Long customer_id, @RequestBody Long screening_id)
+    ResponseEntity<?> create(@RequestBody Long customerId, @RequestBody Long screeningId)
     {
-        Screening screening = _screeningService.getScreeningById(screening_id);
+        Screening screening = _screeningService.getScreeningById(screeningId);
         int ticketsCount = screening.getTicketCount();
         if(ticketsCount<=0)
         {
             return new ResponseEntity<>("There is no tickets avaliable for this screening!",HttpStatus.OK);
         }
-        Customer customer = _customerService.getCustomerById(customer_id);
+        Customer customer = _customerService.getCustomerById(customerId);
 
         screening.setTicketCount(ticketsCount-1);
         Ticket newTicket = new Ticket();

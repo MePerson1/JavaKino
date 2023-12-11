@@ -25,7 +25,7 @@ public class MovieController
     ResponseEntity<List<Movie>> getAllMovies()
     {
         List<Movie> movies = _movieService.getAllMovies();
-        return new ResponseEntity<>(movies, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

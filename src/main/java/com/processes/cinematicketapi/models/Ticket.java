@@ -2,6 +2,7 @@ package com.processes.cinematicketapi.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -26,4 +27,15 @@ public class Ticket
     private String name;
     private double price;
     private boolean isExpired;
+
+    @Override
+    public String toString()
+    {
+        return "Ticket{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", isExpired=" + isExpired +
+                '}';
+    }
 }

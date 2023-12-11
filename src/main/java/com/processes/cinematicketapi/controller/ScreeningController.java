@@ -1,6 +1,9 @@
 package com.processes.cinematicketapi.controller;
 
+import com.processes.cinematicketapi.dto.ScreeningCreateDto;
+import com.processes.cinematicketapi.interfaces.IMovieService;
 import com.processes.cinematicketapi.interfaces.IScreeningService;
+import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.models.Screening;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +17,13 @@ import java.util.List;
 public class ScreeningController
 {
     private final IScreeningService _screeningService;
+    private final IMovieService _movieService;
 
     @Autowired
-    public ScreeningController(IScreeningService screeningService)
+    public ScreeningController(IScreeningService screeningService, IMovieService movieService)
     {
         _screeningService = screeningService;
+        _movieService = movieService;
     }
 
     @GetMapping
@@ -51,12 +56,22 @@ public class ScreeningController
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody Screening newScreening)
+    ResponseEntity<?> create(@RequestBody ScreeningCreateDto newScreeningDto)
     {
         try
         {
-            Screening screening = _screeningService.save(newScreening);
-            return new ResponseEntity<>(screening,HttpStatus.CREATED);
+            Movie movie = _movieService.getMovieById(newScreeningDto.getMovieId());
+
+            Screening screening = new Screening();
+            screening.setMovie(movie);
+            screening.setDate(newScreeningDto.getDate());
+            screening.setTicketCount(newScreeningDto.getTicketCount());
+            screening.setTicketPrice(newScreeningDto.getTicketPrice());
+            screening.setRoomNumber(newScreeningDto.getRoomNumber());
+
+            Screening savedScreening = _screeningService.save(screening);
+
+            return new ResponseEntity<>(savedScreening,HttpStatus.CREATED);
         }
         catch (Exception e)
         {
