@@ -32,10 +32,16 @@ public class TicketService implements ITicketService
     }
 
     @Override
-    public List<Ticket> getTicketsByCustomer(Customer customer)
+    public List<Ticket> getTicketsByCustomerId(Long id)
     {
-        return ticketRepository.findByCustomer(customer);
+        return ticketRepository.findByCustomer_Id(id);
     }
+
+//    @Override
+//    public List<Ticket> getTicketsByCustomer(Customer customer)
+//    {
+//        return ticketRepository.findByCustomer(customer);
+//    }
 
     @Override
     public List<Ticket> getAllTickets()

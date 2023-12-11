@@ -28,4 +28,5 @@ public class Screening
     private Date date;
     private int roomNumber;
     private int ticketCount;
+    private double ticketPrice;
 }

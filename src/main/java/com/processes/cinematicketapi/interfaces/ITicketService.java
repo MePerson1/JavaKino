@@ -8,7 +8,7 @@ import java.util.List;
 public interface ITicketService
 {
     Ticket getTicketById(Long id);
-    List<Ticket> getTicketsByCustomer(Customer customer);
+    List<Ticket> getTicketsByCustomerId(Long id);
     Ticket save(Ticket ticket);
     boolean deleteById(Long id);
     List<Ticket> getAllTickets();

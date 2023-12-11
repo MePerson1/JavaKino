@@ -47,27 +47,59 @@ public class TicketController
         return new ResponseEntity<>(ticket,HttpStatus.OK);
     }
 
-    //TODO: dokończyć, może zamienić metodę na getTicketsByCustomerId to by było jedno zapytanie
     @GetMapping("customer/{id}")
     ResponseEntity<List<Ticket>> getByCustomer(@PathVariable Long id)
     {
-        Customer customer = _customerService.getCustomerById(id);
-        List<Ticket> tickets = _ticketService.getTicketsByCustomer(customer);
-
+        List<Ticket> tickets = _ticketService.getTicketsByCustomerId(id);
+        if(tickets.isEmpty())
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(tickets,HttpStatus.OK);
     }
 
-    //TODO: dokończyć
     @PostMapping
-    ResponseEntity<?> create(@RequestBody Long customer_id, @RequestBody Screening screening)
+    ResponseEntity<?> create(@RequestBody Long customer_id, @RequestBody Long screening_id)
     {
-        return new ResponseEntity<>(HttpStatus.OK);
+        Screening screening = _screeningService.getScreeningById(screening_id);
+        int ticketsCount = screening.getTicketCount();
+        if(ticketsCount<=0)
+        {
+            return new ResponseEntity<>("There is no tickets avaliable for this screening!",HttpStatus.OK);
+        }
+        Customer customer = _customerService.getCustomerById(customer_id);
+
+        screening.setTicketCount(ticketsCount-1);
+        Ticket newTicket = new Ticket();
+        newTicket.setCustomer(customer);
+        newTicket.setScreening(screening);
+        newTicket.setName(screening.getMovie().getTitle());
+        newTicket.setPrice(screening.getTicketPrice());
+
+        _ticketService.save(newTicket);
+
+        return new ResponseEntity<>(newTicket,HttpStatus.OK);
     }
 
-    //TODO dokończyć
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id)
     {
-        return new ResponseEntity<>("",HttpStatus.OK);
+        try
+        {
+            boolean isDeleted = _ticketService.deleteById(id);
+
+            if (isDeleted)
+            {
+                return new ResponseEntity<>("Ticket deleted successfully", HttpStatus.OK);
+            }
+            else
+            {
+                return new ResponseEntity<>("Ticket with ID " + id + " does not exist or couldn't be deleted", HttpStatus.NOT_FOUND);
+            }
+        }
+        catch (Exception ex)
+        {
+            return new ResponseEntity<>("Error deleting ticket", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
