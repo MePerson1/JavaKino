@@ -58,7 +58,7 @@ public class CustomerController
         {
             if(_customerService.checkIfEmailTaken(newCustomer.getEmail()))
             {
-                throw new AlreadyExistsException("User with email " + newCustomer.getEmail() + " already exists!");
+                return new ResponseEntity<>("User with email " + newCustomer.getEmail() + " already exists!", HttpStatus.BAD_REQUEST);
             }
             Customer customer = _customerService.save(newCustomer);
             return new ResponseEntity<>(customer, HttpStatus.CREATED);
@@ -70,7 +70,7 @@ public class CustomerController
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable Long id)
+    ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable Long id)
     {
         Customer existingCustomer = _customerService.getCustomerById(id);
         if (existingCustomer == null)
@@ -81,7 +81,7 @@ public class CustomerController
         {
             if(_customerService.checkIfEmailTaken(customer.getEmail()))
             {
-                throw new AlreadyExistsException("Customer with email " + customer.getEmail() + " already exists!");
+                return new ResponseEntity<>("Customer with email " + customer.getEmail() + " already exists!", HttpStatus.BAD_REQUEST);
             }
         }
 
