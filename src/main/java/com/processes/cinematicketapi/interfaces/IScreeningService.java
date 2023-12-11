@@ -1,14 +1,14 @@
 package com.processes.cinematicketapi.interfaces;
 
-import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.models.Screening;
 
 import java.util.List;
 
 public interface IScreeningService
 {
-    public Screening getScreeningById(Long id);
-    public List<Screening> getScreeningsByMovieTitle(String movieTitle);
-    public Screening save(Screening screening);
-    public boolean deleteById(Long id);
+    Screening getScreeningById(Long id);
+    List<Screening> getScreeningsByMovieTitle(String movieTitle);
+    Screening save(Screening screening);
+    boolean deleteById(Long id);
+    List<Screening> getAllScreenings();
 }

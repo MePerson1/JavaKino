@@ -23,7 +23,21 @@ public class Ticket
     private Screening screening;
 
     //Pola:
-    private String name;
+    private String movieTitle;
     private double price;
     private boolean isExpired;
+
+    @Override
+    public String toString()
+    {
+        return "Ticket{" +
+                "customer=" + customer.getName() +
+                ", date=" + screening.getDate() + '\n' +
+                "room=" + screening.getRoomNumber() +
+                ", movie=" + movieTitle + '\n' +
+                "id=" + id +
+                ", price=" + price +
+                ", isExpired=" + isExpired +
+                '}';
+    }
 }

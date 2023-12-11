@@ -1,7 +1,9 @@
 package com.processes.cinematicketapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,7 @@ public class Screening
 
     //Relacje:
     @OneToMany(mappedBy = "screening")
+    @JsonIgnore
     private List<Ticket> tickets;
 
     @ManyToOne
@@ -28,4 +31,15 @@ public class Screening
     private Date date;
     private int roomNumber;
     private int ticketCount;
+    private double ticketPrice;
+
+    @Override
+    public String toString()
+    {
+        return "Screening{" +
+                "id=" + id +
+                ", date=" + date +
+                ", roomNumber=" + roomNumber +
+                '}';
+    }
 }

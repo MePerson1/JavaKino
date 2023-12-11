@@ -2,16 +2,16 @@ package com.processes.cinematicketapi.service;
 
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.ITicketService;
-import com.processes.cinematicketapi.models.Customer;
-import com.processes.cinematicketapi.models.Screening;
 import com.processes.cinematicketapi.models.Ticket;
 import com.processes.cinematicketapi.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class TicketService implements ITicketService
 {
     private final TicketRepository ticketRepository;
@@ -23,30 +23,43 @@ public class TicketService implements ITicketService
     }
 
     // Metody:
-
+    @Override
     public Ticket getTicketById(Long id)
     {
-        return ticketRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket not found with id: " + id));
+        return ticketRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket with id: " + id + " not found!"));
     }
 
-    public List<Ticket> getTicketsByCustomer(Customer customer)
+    @Override
+    public List<Ticket> getTicketsByCustomerId(Long id)
     {
-        return ticketRepository.findByCustomer(customer);
+        List<Ticket> tickets = ticketRepository.findByCustomer_Id(id);
+        if (tickets.isEmpty())
+        {
+            throw new NotFoundException("Cannot find any tickets for customer with id: " + id + '!');
+        }
+        return tickets;
     }
 
+    @Override
     public List<Ticket> getAllTickets()
     {
-        return ticketRepository.findAll();
+        List<Ticket> tickets = ticketRepository.findAll();
+        if (tickets.isEmpty())
+        {
+            throw new NotFoundException("Cannot find any tickets!");
+        }
+        return tickets;
     }
 
+    @Override
     public Ticket save(Ticket ticket)
     {
         return ticketRepository.save(ticket);
     }
 
+    @Override
     public boolean deleteById(Long id)
     {
-        if(ticketRepository.deleteAndReturnStatusById(id)!=0) return true;
-        return false;
+        return ticketRepository.deleteAndReturnStatusById(id) != 0;
     }
 }

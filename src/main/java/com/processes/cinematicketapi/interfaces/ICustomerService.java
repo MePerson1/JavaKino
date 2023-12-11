@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface ICustomerService
 {
-    public List<Customer> getAllCustomers();
-    public Customer getCustomerById(Long id);
-    public Customer getCustomerByName(String name);
-    public Customer save(Customer customer);
-    public boolean deleteById(Long id);
+    List<Customer> getAllCustomers();
+
+    Customer getCustomerById(Long id);
+
+    Customer getCustomerByName(String name);
+
+    Customer save(Customer customer);
+
+    boolean deleteById(Long id);
 }
