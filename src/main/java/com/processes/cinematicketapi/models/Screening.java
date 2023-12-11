@@ -1,5 +1,6 @@
 package com.processes.cinematicketapi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -19,6 +20,7 @@ public class Screening
 
     //Relacje:
     @OneToMany(mappedBy = "screening")
+    @JsonIgnore
     private List<Ticket> tickets;
 
     @ManyToOne

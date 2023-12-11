@@ -73,7 +73,7 @@ public class TicketController
         Ticket newTicket = new Ticket();
         newTicket.setCustomer(customer);
         newTicket.setScreening(screening);
-        newTicket.setName(screening.getMovie().getTitle());
+        newTicket.setMovieTitle(screening.getMovie().getTitle());
         newTicket.setPrice(screening.getTicketPrice());
 
         _ticketService.save(newTicket);

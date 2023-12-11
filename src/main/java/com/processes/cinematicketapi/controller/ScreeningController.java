@@ -3,6 +3,7 @@ package com.processes.cinematicketapi.controller;
 import com.processes.cinematicketapi.dto.ScreeningCreateDto;
 import com.processes.cinematicketapi.interfaces.IMovieService;
 import com.processes.cinematicketapi.interfaces.IScreeningService;
+import com.processes.cinematicketapi.models.Customer;
 import com.processes.cinematicketapi.models.Movie;
 import com.processes.cinematicketapi.models.Screening;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class ScreeningController
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Screening> getScreeningById(@PathVariable Long id)
+    ResponseEntity<Screening> getById(@PathVariable Long id)
     {
         Screening screening = _screeningService.getScreeningById(id);
         return new ResponseEntity<>(screening,HttpStatus.OK);
@@ -77,6 +78,30 @@ public class ScreeningController
         {
             return new ResponseEntity<>("Failed to create customer: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<Screening> update(@RequestBody Screening screening, @PathVariable Long id)
+    {
+        Screening existingScreening = _screeningService.getScreeningById(id);
+        if (existingScreening == null)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        existingScreening.setRoomNumber(screening.getRoomNumber());
+        existingScreening.setDate(screening.getDate());
+        existingScreening.setTicketPrice(screening.getTicketPrice());
+        existingScreening.setTicketCount(screening.getTicketCount());
+
+        Screening updatedScreening = _screeningService.save(existingScreening);
+
+        if (updatedScreening == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(updatedScreening, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

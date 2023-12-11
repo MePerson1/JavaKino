@@ -45,7 +45,7 @@ public class CustomerService implements ICustomerService
     {
         List<Customer> customers = customerRepository.findAll();
         if (customers.isEmpty()) {
-            throw new NotFoundException("Cannot find any customers.");
+            throw new NotFoundException("Cannot find any customers");
         }
         return customers;
     }
