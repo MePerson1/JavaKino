@@ -55,13 +55,13 @@ public class CustomerService implements ICustomerService
     @Override
     public Customer save(Customer customer)
     {
-        boolean alreadyExists = customerRepository.existsByEmail(customer.getEmail());
-        if (alreadyExists)
-        {
-            throw new AlreadyExistsException("User with email " + customer.getEmail() + " already exists!");
-        }
-
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public boolean checkIfEmailTaken(String email)
+    {
+        return  customerRepository.existsByEmail(email);
     }
 
     @Override

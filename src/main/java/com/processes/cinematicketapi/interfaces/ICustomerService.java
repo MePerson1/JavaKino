@@ -14,5 +14,7 @@ public interface ICustomerService
 
     Customer save(Customer customer);
 
+    boolean checkIfEmailTaken(String email);
+
     boolean deleteById(Long id);
 }
