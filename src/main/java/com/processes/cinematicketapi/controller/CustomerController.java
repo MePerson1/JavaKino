@@ -1,5 +1,6 @@
 package com.processes.cinematicketapi.controller;
 
+import com.processes.cinematicketapi.exceptions.AlreadyExistsException;
 import com.processes.cinematicketapi.interfaces.ICustomerService;
 import com.processes.cinematicketapi.models.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,10 @@ public class CustomerController
     {
         try
         {
+            if(_customerService.checkIfEmailTaken(newCustomer.getEmail()))
+            {
+                return new ResponseEntity<>("User with email " + newCustomer.getEmail() + " already exists!", HttpStatus.BAD_REQUEST);
+            }
             Customer customer = _customerService.save(newCustomer);
             return new ResponseEntity<>(customer, HttpStatus.CREATED);
         }
@@ -62,16 +67,22 @@ public class CustomerController
         {
             return new ResponseEntity<>("Failed to create customer: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable Long id)
+    ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable Long id)
     {
         Customer existingCustomer = _customerService.getCustomerById(id);
         if (existingCustomer == null)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!existingCustomer.getEmail().equals(customer.getEmail()))
+        {
+            if(_customerService.checkIfEmailTaken(customer.getEmail()))
+            {
+                return new ResponseEntity<>("Customer with email " + customer.getEmail() + " already exists!", HttpStatus.BAD_REQUEST);
+            }
         }
 
         existingCustomer.setName(customer.getName());
