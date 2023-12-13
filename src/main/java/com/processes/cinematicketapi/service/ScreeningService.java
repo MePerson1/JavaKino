@@ -1,5 +1,6 @@
 package com.processes.cinematicketapi.service;
 
+import com.processes.cinematicketapi.exceptions.NoContentException;
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.IScreeningService;
 import com.processes.cinematicketapi.models.Screening;
@@ -35,7 +36,7 @@ public class ScreeningService implements IScreeningService
         List<Screening> screenings = screeningRepository.findAll();
         if (screenings.isEmpty())
         {
-            throw new NotFoundException("Cannot find any customers!");
+            throw new NoContentException("Cannot find any Screenings!");
         }
         return screenings;
     }

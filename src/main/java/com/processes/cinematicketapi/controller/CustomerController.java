@@ -33,10 +33,6 @@ public class CustomerController
     ResponseEntity<Customer> getCustomerById(@PathVariable Long id)
     {
         Customer customer = _customerService.getCustomerById(id);
-        if (customer == null)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
@@ -44,10 +40,6 @@ public class CustomerController
     ResponseEntity<Customer> getCustomerByName(@PathVariable String name)
     {
         Customer customer = _customerService.getCustomerByName(name);
-        if (customer == null)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
