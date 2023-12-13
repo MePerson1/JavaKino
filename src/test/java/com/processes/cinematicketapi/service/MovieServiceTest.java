@@ -1,4 +1,4 @@
-package com.processes.cinematicketapi;
+package com.processes.cinematicketapi.service;
 
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.models.Movie;
