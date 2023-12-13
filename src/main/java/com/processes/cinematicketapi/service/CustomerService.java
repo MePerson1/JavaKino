@@ -1,6 +1,7 @@
 package com.processes.cinematicketapi.service;
 
 import com.processes.cinematicketapi.exceptions.AlreadyExistsException;
+import com.processes.cinematicketapi.exceptions.NoContentException;
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.ICustomerService;
 import com.processes.cinematicketapi.models.Customer;
@@ -36,7 +37,7 @@ public class CustomerService implements ICustomerService
         Customer customer = customerRepository.findByName(name);
         if (customer == null)
         {
-            throw new NotFoundException("Customer with name: " + name + "not found!");
+            throw new NotFoundException("Customer with name: " + name + " not found!");
         }
         return customer;
     }
@@ -47,7 +48,7 @@ public class CustomerService implements ICustomerService
         List<Customer> customers = customerRepository.findAll();
         if (customers.isEmpty())
         {
-            throw new NotFoundException("Cannot find any customers!");
+            throw new NoContentException("Cannot find any customers!");
         }
         return customers;
     }

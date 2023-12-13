@@ -1,5 +1,6 @@
 package com.processes.cinematicketapi.service;
 
+import com.processes.cinematicketapi.exceptions.NoContentException;
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.ITicketService;
 import com.processes.cinematicketapi.models.Ticket;
@@ -46,7 +47,7 @@ public class TicketService implements ITicketService
         List<Ticket> tickets = ticketRepository.findAll();
         if (tickets.isEmpty())
         {
-            throw new NotFoundException("Cannot find any tickets!");
+            throw new NoContentException("Cannot find any tickets!");
         }
         return tickets;
     }

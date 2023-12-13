@@ -71,6 +71,16 @@ public class CustomerControllerIntegrationTest
                 .andExpect(jsonPath("$[0].name", is("John Smith")))
                 .andExpect(jsonPath("$[1].name", is("Alex Timberman")));
     }
+
+    @Test
+    public void givenNone_whenGetCustomers_thenStatus204() throws Exception
+    {
+        mvc.perform(get("/api/customer")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
     private void createTestCustomer(String name, String email, String password)
     {
         Customer customer = new Customer();

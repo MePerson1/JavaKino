@@ -71,7 +71,7 @@ public class ScreeningController
 
             return new ResponseEntity<>(savedScreening, HttpStatus.CREATED);
         }
-        catch (AlreadyExistsException | NotFoundException e)
+        catch (NotFoundException e)
         {
             return new ResponseEntity<>("Failed to create screening: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -95,7 +95,7 @@ public class ScreeningController
 
             return new ResponseEntity<>(updatedScreening, HttpStatus.OK);
         }
-        catch (AlreadyExistsException | NotFoundException e)
+        catch (NotFoundException e)
         {
             return new ResponseEntity<>("Failed to update screening: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -104,22 +104,15 @@ public class ScreeningController
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id)
     {
-        try
-        {
-            boolean isDeleted = _screeningService.deleteById(id);
+        boolean isDeleted = _screeningService.deleteById(id);
 
-            if (isDeleted)
-            {
-                return new ResponseEntity<>("Screening deleted successfully", HttpStatus.OK);
-            }
-            else
-            {
-                return new ResponseEntity<>("Screening with ID " + id + " does not exist or couldn't be deleted", HttpStatus.NOT_FOUND);
-            }
-        }
-        catch (Exception ex)
+        if (isDeleted)
         {
-            return new ResponseEntity<>("Error deleting screening", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Screening deleted successfully", HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>("Screening with ID " + id + " does not exist or couldn't be deleted", HttpStatus.NOT_FOUND);
         }
     }
 }

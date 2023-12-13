@@ -60,10 +60,6 @@ public class MovieController
     ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id)
     {
         Movie existingMovie = _movieService.getMovieById(id);
-        if (existingMovie == null)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
 
         existingMovie.setTitle(movie.getTitle());
         existingMovie.setDescription(movie.getDescription());

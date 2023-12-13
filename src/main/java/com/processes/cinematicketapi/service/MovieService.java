@@ -1,5 +1,6 @@
 package com.processes.cinematicketapi.service;
 
+import com.processes.cinematicketapi.exceptions.NoContentException;
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.IMovieService;
 import com.processes.cinematicketapi.models.Movie;
@@ -46,7 +47,7 @@ public class MovieService implements IMovieService
         List<Movie> movies = movieRepository.findAll();
         if (movies.isEmpty())
         {
-            throw new NotFoundException("Cannot find any movies!");
+            throw new NoContentException("Cannot find any movies!");
         }
         return movies;
     }
