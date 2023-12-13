@@ -65,10 +65,6 @@ public class CustomerController
     ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable Long id)
     {
         Customer existingCustomer = _customerService.getCustomerById(id);
-        if (existingCustomer == null)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         if(!existingCustomer.getEmail().equals(customer.getEmail()))
         {
             if(_customerService.checkIfEmailTaken(customer.getEmail()))
