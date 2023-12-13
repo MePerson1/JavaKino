@@ -1,4 +1,4 @@
-package com.processes.cinematicketapi;
+package com.processes.cinematicketapi.models;
 
 import com.processes.cinematicketapi.models.Customer;
 import org.junit.jupiter.api.Test;

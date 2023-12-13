@@ -77,7 +77,7 @@ public class TicketController
 
             return new ResponseEntity<>(newTicket,HttpStatus.OK);
         }
-        catch (AlreadyExistsException | NotFoundException e)
+        catch (NotFoundException e)
         {
             return new ResponseEntity<>("Failed to create ticket: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
