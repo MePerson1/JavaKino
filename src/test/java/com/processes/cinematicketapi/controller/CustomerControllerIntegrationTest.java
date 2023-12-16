@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,17 +24,14 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = CinemaTicketApiApplication.class)
 @AutoConfigureMockMvc
-@EnableAutoConfiguration(exclude= SecurityAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 @AutoConfigureTestDatabase
 @Transactional
-public class CustomerControllerIntegrationTest
-{
+public class CustomerControllerIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
@@ -43,8 +39,7 @@ public class CustomerControllerIntegrationTest
     private CustomerRepository repository;
 
     @Test
-    public void whenValidInput_thenCreateCustomer() throws Exception
-    {
+    public void whenValidInput_thenCreateCustomer() throws Exception {
         Customer newCustomer = new Customer();
         newCustomer.setName("John Smith");
         newCustomer.setEmail("john@test.com");
@@ -58,8 +53,7 @@ public class CustomerControllerIntegrationTest
     }
 
     @Test
-    public void givenCustomers_whenGetCustomers_thenStatus200() throws Exception
-    {
+    public void givenCustomers_whenGetCustomers_thenStatus200() throws Exception {
         createTestCustomer("John Smith", "john@test.com", "Superhardpassword1!");
         createTestCustomer("Alex Timberman", "alexy5@erd.ru", "$russianPasswordExample900");
 
@@ -69,22 +63,20 @@ public class CustomerControllerIntegrationTest
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$",hasSize(greaterThanOrEqualTo(2))))
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
                 .andExpect(jsonPath("$[0].name", is("John Smith")))
                 .andExpect(jsonPath("$[1].name", is("Alex Timberman")));
     }
 
     @Test
-    public void givenNone_whenGetCustomers_thenStatus204() throws Exception
-    {
+    public void givenNone_whenGetCustomers_thenStatus204() throws Exception {
         mvc.perform(get("/api/customer")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
-    private void createTestCustomer(String name, String email, String password)
-    {
+    private void createTestCustomer(String name, String email, String password) {
         Customer customer = new Customer();
         customer.setName(name);
         customer.setEmail(email);

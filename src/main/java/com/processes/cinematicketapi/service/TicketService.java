@@ -13,54 +13,44 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TicketService implements ITicketService
-{
+public class TicketService implements ITicketService {
     private final TicketRepository ticketRepository;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository)
-    {
+    public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
 
-    // Metody:
     @Override
-    public Ticket getTicketById(Long id)
-    {
+    public Ticket getTicketById(Long id) {
         return ticketRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket with id: " + id + " not found!"));
     }
 
     @Override
-    public List<Ticket> getTicketsByCustomerId(Long id)
-    {
+    public List<Ticket> getTicketsByCustomerId(Long id) {
         List<Ticket> tickets = ticketRepository.findByCustomer_Id(id);
-        if (tickets.isEmpty())
-        {
+        if (tickets.isEmpty()) {
             throw new NotFoundException("Cannot find any tickets for customer with id: " + id + '!');
         }
         return tickets;
     }
 
     @Override
-    public List<Ticket> getAllTickets()
-    {
+    public List<Ticket> getAllTickets() {
         List<Ticket> tickets = ticketRepository.findAll();
-        if (tickets.isEmpty())
-        {
+        if (tickets.isEmpty()) {
             throw new NoContentException("Cannot find any tickets!");
         }
         return tickets;
     }
 
     @Override
-    public Ticket save(Ticket ticket)
-    {
+    public Ticket save(Ticket ticket) {
         return ticketRepository.save(ticket);
     }
 
     @Override
-    public boolean deleteById(Long id)
-    {
+    public boolean deleteById(Long id) {
         return ticketRepository.deleteAndReturnStatusById(id) != 0;
     }
 }

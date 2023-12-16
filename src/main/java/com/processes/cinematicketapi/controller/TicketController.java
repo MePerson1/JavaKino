@@ -1,7 +1,6 @@
 package com.processes.cinematicketapi.controller;
 
 import com.processes.cinematicketapi.dto.TicketDto;
-import com.processes.cinematicketapi.exceptions.AlreadyExistsException;
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.ICustomerService;
 import com.processes.cinematicketapi.interfaces.IScreeningService;
@@ -18,55 +17,47 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/ticket")
-public class TicketController
-{
+public class TicketController {
     private final ITicketService _ticketService;
     private final ICustomerService _customerService;
     private final IScreeningService _screeningService;
 
     @Autowired
-    public TicketController(ITicketService ticketService, ICustomerService customerService, IScreeningService screeningService)
-    {
+    public TicketController(ITicketService ticketService, ICustomerService customerService, IScreeningService screeningService) {
         _ticketService = ticketService;
         _customerService = customerService;
         _screeningService = screeningService;
     }
 
     @GetMapping
-    ResponseEntity<List<Ticket>> getAll()
-    {
+    ResponseEntity<List<Ticket>> getAll() {
         List<Ticket> tickets = _ticketService.getAllTickets();
-        return new ResponseEntity<>(tickets,HttpStatus.OK);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Ticket> getById(@PathVariable Long id)
-    {
+    ResponseEntity<Ticket> getById(@PathVariable Long id) {
         Ticket ticket = _ticketService.getTicketById(id);
-        return new ResponseEntity<>(ticket,HttpStatus.OK);
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
 
     @GetMapping("customer/{id}")
-    ResponseEntity<List<Ticket>> getByCustomer(@PathVariable Long id)
-    {
+    ResponseEntity<List<Ticket>> getByCustomer(@PathVariable Long id) {
         List<Ticket> tickets = _ticketService.getTicketsByCustomerId(id);
-        return new ResponseEntity<>(tickets,HttpStatus.OK);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody TicketDto ticket)
-    {
-        try
-        {
+    ResponseEntity<?> create(@RequestBody TicketDto ticket) {
+        try {
             Screening screening = _screeningService.getScreeningById(ticket.getScreeningId());
             int ticketsCount = screening.getTicketCount();
-            if(ticketsCount<=0)
-            {
-                return new ResponseEntity<>("There is no tickets avaliable for this screening!",HttpStatus.OK);
+            if (ticketsCount <= 0) {
+                return new ResponseEntity<>("There is no tickets avaliable for this screening!", HttpStatus.OK);
             }
             Customer customer = _customerService.getCustomerById(ticket.getCustomerId());
 
-            screening.setTicketCount(ticketsCount-1);
+            screening.setTicketCount(ticketsCount - 1);
             Ticket newTicket = new Ticket();
             newTicket.setCustomer(customer);
             newTicket.setScreening(screening);
@@ -75,32 +66,23 @@ public class TicketController
 
             newTicket = _ticketService.save(newTicket);
 
-            return new ResponseEntity<>(newTicket,HttpStatus.OK);
-        }
-        catch (NotFoundException e)
-        {
+            return new ResponseEntity<>(newTicket, HttpStatus.OK);
+        } catch (NotFoundException e) {
             return new ResponseEntity<>("Failed to create ticket: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id)
-    {
-        try
-        {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        try {
             boolean isDeleted = _ticketService.deleteById(id);
 
-            if (isDeleted)
-            {
+            if (isDeleted) {
                 return new ResponseEntity<>("Ticket deleted successfully", HttpStatus.OK);
-            }
-            else
-            {
+            } else {
                 return new ResponseEntity<>("Ticket with ID " + id + " does not exist or couldn't be deleted", HttpStatus.NOT_FOUND);
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return new ResponseEntity<>("Error deleting ticket", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

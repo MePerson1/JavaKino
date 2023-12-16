@@ -1,7 +1,6 @@
 package com.processes.cinematicketapi.controller;
 
 import com.processes.cinematicketapi.dto.ScreeningDto;
-import com.processes.cinematicketapi.exceptions.AlreadyExistsException;
 import com.processes.cinematicketapi.exceptions.NotFoundException;
 import com.processes.cinematicketapi.interfaces.IMovieService;
 import com.processes.cinematicketapi.interfaces.IScreeningService;
@@ -16,48 +15,40 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/screening")
-public class ScreeningController
-{
+public class ScreeningController {
     private final IScreeningService _screeningService;
     private final IMovieService _movieService;
 
     @Autowired
-    public ScreeningController(IScreeningService screeningService, IMovieService movieService)
-    {
+    public ScreeningController(IScreeningService screeningService, IMovieService movieService) {
         _screeningService = screeningService;
         _movieService = movieService;
     }
 
     @GetMapping
-    ResponseEntity<List<Screening>> getAll()
-    {
+    ResponseEntity<List<Screening>> getAll() {
         List<Screening> screenings = _screeningService.getAllScreenings();
         return new ResponseEntity<>(screenings, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Screening> getById(@PathVariable Long id)
-    {
+    ResponseEntity<Screening> getById(@PathVariable Long id) {
         Screening screening = _screeningService.getScreeningById(id);
         return new ResponseEntity<>(screening, HttpStatus.OK);
     }
 
     @GetMapping("title/{title}")
-    ResponseEntity<List<Screening>> getByTitle(@PathVariable String title)
-    {
+    ResponseEntity<List<Screening>> getByTitle(@PathVariable String title) {
         List<Screening> screenings = _screeningService.getScreeningsByMovieTitle(title);
-        if (screenings.isEmpty())
-        {
+        if (screenings.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(screenings, HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody ScreeningDto newScreeningDto)
-    {
-        try
-        {
+    ResponseEntity<?> create(@RequestBody ScreeningDto newScreeningDto) {
+        try {
             Movie movie = _movieService.getMovieById(newScreeningDto.getMovieId());
 
             Screening screening = new Screening();
@@ -70,18 +61,14 @@ public class ScreeningController
             Screening savedScreening = _screeningService.save(screening);
 
             return new ResponseEntity<>(savedScreening, HttpStatus.CREATED);
-        }
-        catch (NotFoundException e)
-        {
+        } catch (NotFoundException e) {
             return new ResponseEntity<>("Failed to create screening: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> update(@RequestBody ScreeningDto screening, @PathVariable Long id)
-    {
-        try
-        {
+    ResponseEntity<?> update(@RequestBody ScreeningDto screening, @PathVariable Long id) {
+        try {
             Screening existingScreening = _screeningService.getScreeningById(id);
             Movie existingMovie = _movieService.getMovieById(screening.getMovieId());
 
@@ -94,24 +81,18 @@ public class ScreeningController
             Screening updatedScreening = _screeningService.save(existingScreening);
 
             return new ResponseEntity<>(updatedScreening, HttpStatus.OK);
-        }
-        catch (NotFoundException e)
-        {
+        } catch (NotFoundException e) {
             return new ResponseEntity<>("Failed to update screening: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id)
-    {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         boolean isDeleted = _screeningService.deleteById(id);
 
-        if (isDeleted)
-        {
+        if (isDeleted) {
             return new ResponseEntity<>("Screening deleted successfully", HttpStatus.OK);
-        }
-        else
-        {
+        } else {
             return new ResponseEntity<>("Screening with ID " + id + " does not exist or couldn't be deleted", HttpStatus.NOT_FOUND);
         }
     }

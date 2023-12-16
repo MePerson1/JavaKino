@@ -11,54 +11,44 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/movie")
-public class MovieController
-{
+public class MovieController {
     private final IMovieService _movieService;
 
     @Autowired
-    public MovieController(IMovieService movieService)
-    {
+    public MovieController(IMovieService movieService) {
         _movieService = movieService;
     }
 
     @GetMapping
-    ResponseEntity<List<Movie>> getAllMovies()
-    {
+    ResponseEntity<List<Movie>> getAllMovies() {
         List<Movie> movies = _movieService.getAllMovies();
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Movie> getMovieById(@PathVariable Long id)
-    {
+    ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
         Movie movie = _movieService.getMovieById(id);
         return new ResponseEntity<>(movie, HttpStatus.OK);
     }
 
     @GetMapping("/by-title/{title}")
-    ResponseEntity<List<Movie>> getMovieByTitle(@PathVariable String title)
-    {
+    ResponseEntity<List<Movie>> getMovieByTitle(@PathVariable String title) {
         List<Movie> movies = _movieService.getMovieByTitle(title);
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<?> createMovie(@RequestBody Movie newMovie)
-    {
-        try
-        {
+    ResponseEntity<?> createMovie(@RequestBody Movie newMovie) {
+        try {
             Movie movie = _movieService.save(newMovie);
             return new ResponseEntity<>(movie, HttpStatus.CREATED);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return new ResponseEntity<>("Failed to create customer: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id)
-    {
+    ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
         Movie existingMovie = _movieService.getMovieById(id);
 
         existingMovie.setTitle(movie.getTitle());
@@ -72,8 +62,7 @@ public class MovieController
 
         Movie updatedMovie = _movieService.save(existingMovie);
 
-        if (updatedMovie == null)
-        {
+        if (updatedMovie == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -81,23 +70,16 @@ public class MovieController
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteMovie(@PathVariable Long id)
-    {
-        try
-        {
+    public ResponseEntity<String> deleteMovie(@PathVariable Long id) {
+        try {
             boolean isDeleted = _movieService.deleteById(id);
 
-            if (isDeleted)
-            {
+            if (isDeleted) {
                 return new ResponseEntity<>("Movie deleted successfully", HttpStatus.OK);
-            }
-            else
-            {
+            } else {
                 return new ResponseEntity<>("Movie with ID " + id + " does not exist or couldn't be deleted", HttpStatus.NOT_FOUND);
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return new ResponseEntity<>("Error deleting movie", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -4,8 +4,7 @@ import com.processes.cinematicketapi.models.Movie;
 
 import java.util.List;
 
-public interface IMovieService
-{
+public interface IMovieService {
     List<Movie> getAllMovies();
 
     Movie getMovieById(Long id);
