@@ -3,10 +3,12 @@ package com.processes.cinematicketapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
 @Data
+@ToString(exclude = {"screenings"})
 @Entity
 @Table(name = "movies")
 public class Movie {
@@ -26,13 +28,4 @@ public class Movie {
     private int rating;
     private int ageRestriction;
     private int runtime;
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

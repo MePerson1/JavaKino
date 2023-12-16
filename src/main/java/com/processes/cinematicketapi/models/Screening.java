@@ -3,11 +3,13 @@ package com.processes.cinematicketapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
+@ToString(exclude = {"tickets"})
 @Entity
 @Table(name = "screenings")
 public class Screening {
@@ -27,13 +29,4 @@ public class Screening {
     private int roomNumber;
     private int ticketCount;
     private double ticketPrice;
-
-    @Override
-    public String toString() {
-        return "Screening{" +
-                "id=" + id +
-                ", date=" + date +
-                ", roomNumber=" + roomNumber +
-                '}';
-    }
 }
