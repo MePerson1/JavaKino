@@ -3,26 +3,21 @@ package com.processes.cinematicketapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "movies")
-public class Movie
-{
-    //Id:
+public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //Relacje:
     @OneToMany(mappedBy = "movie")
     @JsonIgnore
     private List<Screening> screenings;
 
-    //Movie:
     private String title;
     private String description;
     private String genre;
@@ -33,8 +28,7 @@ public class Movie
     private int runtime;
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +

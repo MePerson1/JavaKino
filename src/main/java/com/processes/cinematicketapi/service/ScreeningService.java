@@ -13,54 +13,44 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ScreeningService implements IScreeningService
-{
+public class ScreeningService implements IScreeningService {
     private final ScreeningRepository screeningRepository;
 
     @Autowired
-    public ScreeningService(ScreeningRepository screeningRepository)
-    {
+    public ScreeningService(ScreeningRepository screeningRepository) {
         this.screeningRepository = screeningRepository;
     }
 
-    //Metody:
     @Override
-    public Screening getScreeningById(Long id)
-    {
+    public Screening getScreeningById(Long id) {
         return screeningRepository.findById(id).orElseThrow(() -> new NotFoundException("Screening with id: " + id + " not found!"));
     }
 
     @Override
-    public List<Screening> getAllScreenings()
-    {
+    public List<Screening> getAllScreenings() {
         List<Screening> screenings = screeningRepository.findAll();
-        if (screenings.isEmpty())
-        {
+        if (screenings.isEmpty()) {
             throw new NoContentException("Cannot find any Screenings!");
         }
         return screenings;
     }
 
     @Override
-    public List<Screening> getScreeningsByMovieTitle(String movieTitle)
-    {
+    public List<Screening> getScreeningsByMovieTitle(String movieTitle) {
         List<Screening> screenings = screeningRepository.findByMovieTitle(movieTitle);
-        if (screenings.isEmpty())
-        {
+        if (screenings.isEmpty()) {
             throw new NotFoundException("Cannot find any screenings for movie " + movieTitle + '!');
         }
         return screenings;
     }
 
     @Override
-    public Screening save(Screening screening)
-    {
+    public Screening save(Screening screening) {
         return screeningRepository.save(screening);
     }
 
     @Override
-    public boolean deleteById(Long id)
-    {
+    public boolean deleteById(Long id) {
         return screeningRepository.deleteAndReturnStatusById(id) != 0;
     }
 }

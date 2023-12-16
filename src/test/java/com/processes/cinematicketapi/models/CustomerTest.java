@@ -1,6 +1,5 @@
 package com.processes.cinematicketapi.models;
 
-import com.processes.cinematicketapi.models.Customer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

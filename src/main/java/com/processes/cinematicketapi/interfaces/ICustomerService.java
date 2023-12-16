@@ -4,8 +4,7 @@ import com.processes.cinematicketapi.models.Customer;
 
 import java.util.List;
 
-public interface ICustomerService
-{
+public interface ICustomerService {
     List<Customer> getAllCustomers();
 
     Customer getCustomerById(Long id);

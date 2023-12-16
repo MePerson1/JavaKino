@@ -6,30 +6,25 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tickets")
-public class Ticket
-{
-    //Id:
+public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //Relacje:
     @ManyToOne
-    @JoinColumn(name="customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name="screening_id")
+    @JoinColumn(name = "screening_id")
     private Screening screening;
 
-    //Pola:
     private String movieTitle;
     private double price;
     private boolean isExpired;
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Ticket{" +
                 "customer=" + customer.getName() +
                 ", date=" + screening.getDate() + '\n' +

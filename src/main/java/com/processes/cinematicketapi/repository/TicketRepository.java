@@ -13,8 +13,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface TicketRepository extends JpaRepository<Ticket, Long>
-{
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByCustomer(Customer customer);
 
     List<Ticket> findByCustomer_Id(Long customerId);

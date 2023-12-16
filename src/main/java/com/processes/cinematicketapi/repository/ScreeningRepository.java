@@ -12,8 +12,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface ScreeningRepository extends JpaRepository<Screening, Long>
-{
+public interface ScreeningRepository extends JpaRepository<Screening, Long> {
     List<Screening> findByMovieTitle(String movieTitle);
 
     @Transactional
