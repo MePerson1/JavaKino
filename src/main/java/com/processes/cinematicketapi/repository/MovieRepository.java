@@ -15,7 +15,6 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, Long>
 {
     List<Movie> findByTitle(String title);
-    List<Movie> findAll();
 
     @Transactional
     @Modifying

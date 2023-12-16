@@ -15,7 +15,6 @@ import java.util.List;
 public interface ScreeningRepository extends JpaRepository<Screening, Long>
 {
     List<Screening> findByMovieTitle(String movieTitle);
-    List<Screening> findAll();
 
     @Transactional
     @Modifying

@@ -34,12 +34,7 @@ public class CustomerService implements ICustomerService
     @Override
     public Customer getCustomerByName(String name)
     {
-        Customer customer = customerRepository.findByName(name);
-        if (customer == null)
-        {
-            throw new NotFoundException("Customer with name: " + name + " not found!");
-        }
-        return customer;
+        return customerRepository.findByName(name).orElseThrow(() -> new NotFoundException("Customer with name: " + name + " not found!"));
     }
 
     @Override
